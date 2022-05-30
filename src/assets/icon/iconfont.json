@@ -1,0 +1,58 @@
+{
+  "id": "3365924",
+  "name": "考试系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2678664",
+      "name": "资料库",
+      "font_class": "ziliaoku",
+      "unicode": "e66e",
+      "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "5520644",
+      "name": "学习中心",
+      "font_class": "wsdzb_zbgzt_xxzx",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "9323493",
+      "name": "交流",
+      "font_class": "jiaoliu",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "11277552",
+      "name": "企业-02",
+      "font_class": "qiye-2",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "11984340",
+      "name": "智能考勤",
+      "font_class": "zhinengkaoqin",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "16135368",
+      "name": "清华-档案中心off",
+      "font_class": "qinghua-danganzhongxinoff",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "23005956",
+      "name": "智慧课堂",
+      "font_class": "zhihuiketang",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    }
+  ]
+}

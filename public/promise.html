@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function login() {
+            return new Promise(function(resolve, reject) {
+                //resolve成功的回调，reject失败的回调
+                ajax({
+                    url: '/user/login',
+                    params: {
+                        username: 'xiaozhang',
+                        password: '888888',
+                    },
+                    success(res) {
+                        //  res xhr.responseText
+                        resolve(res)
+                    },
+                })
+            })
+        }
+        //这种写法并不能解决地狱回调;
+        // .then方法如果返回一个promise对象;那么这个.then后就可以在接.then()3//地狱回调被我们解决了;
+        //一个方法如果返回一个promise对象，那么这个方法就有.then方法;
+        // login()对象是一个promise对象，那么说明login()方法之后可以接.then()
+        // login().then().then()方法又返回一个promise对象;―说明.then方法其实就是一个Promise .then()方法是一个promise对象;那么.then方法后就又可以接.then()方法;
+
+        login()
+            .then((res) => {
+                console.log(res) //登录时服务端返回的参数
+            })
+            //   .catch((err) => {
+            //     console.log(err)
+            //   })
+
+
+        //地狱回调
+        ajax({
+            url: '/user/login',
+            params: {
+                username: 'xiaozhang',
+                password: '888888',
+            },
+            success(res) {
+                console.log('222222');
+                ajax({
+                    url: '/user/login',
+                    params: {
+                        username: 'xiaozhang',
+                        password: '888888',
+                    },
+                    success(res) {
+                        resolve(res)
+                    },
+                })
+
+            },
+        })
+
+        function ajax({
+            type = 'post',
+            url,
+            params = {},
+            success
+        }) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', 'url', true);
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    console.log(xhr.reponseText)
+                }
+            }
+            xhr.send(JSON.stringify(params));
+        }
+
+        function getUserInfo(payload = {}) {
+            return axios.post('/user/info', payload, getPostConfig())
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //api.js
+
+        class Axios {
+            constructor() {
+                    //声明属性，放在constructor()
+                }
+                //接口名，post对象
+            post(url, params) {
+                return new Promise(function(resolve, reject) {
+                    //resolve成功的回调，reject失败的回调
+                    ajax({
+                        url: '/user/login',
+                        params,
+                        success(res) {
+                            //  res xhr.responseText
+                            resolve(res)
+                        },
+                    })
+                })
+            }
+        }
+
+        var axios = new Axios();
+
+        function axiosLogin(params = {}) {
+            return axios.post('/user/login', params)
+        }
+
+
+        axiosLogin({
+            username: 'xiaozhang',
+            password: '888888',
+        }).then(res => {
+            console.log('---axios login---');
+            console.log(res); //res
+        })
+
+        ////////////////////////////////////////////////////////
+
+        login({
+            username: 'xiaozhang',
+            password: '888888',
+        }).then(res => {
+            console.log('---login---');
+            console.log(res); //res
+        })
+
+        function login(params = {}) {
+            return new Promise(function(resolve, reject) {
+                //resolve成功的回调，reject失败的回调
+                ajax({
+                    url: '/user/login',
+                    params,
+                    success(res) {
+                        //  res xhr.responseText
+                        resolve(res)
+                    },
+                })
+            })
+        }
+
+        function ajax({
+            type = 'post',
+            url,
+            params = {},
+            success
+        }) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', 'url', true);
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    console.log(xhr.reponseText)
+                }
+            }
+            xhr.send(JSON.stringify(params));
+        }
+    </script>
+</body>
+
+</html>

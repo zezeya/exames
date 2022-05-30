@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+}
+
+h2 {
+    margin: 0;
+}
+
+.mine {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.align {
+    display: flex !important;
+    align-items: center !important;
+}
+
+//公共样式
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.align-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-center1 {
+    display: flex;
+    align-items: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
+
+.mr-15 {
+    margin-right: 15px;
+}
+
+.mr-60 {
+    margin-right: 60px;
+}
+
+.mr-180 {
+    margin-right: 180;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 40px;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.ml-45 {
+    margin-left: 45px;
+}
+
+.mr-45 {
+    margin-right: 45px;
+}
+
+.ml-50 {
+    margin-left: 50px;
+}
+
+.ml-60 {
+    margin-left: 60px;
+}
+
+.ml-70 {
+    margin-left: 70px;
+}
+
+//项目中的样式
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.shadow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0, 0, 6px rgba(0, 0, 0, 0.1);
+}
+
+// .button {
+//     width: 280px;
+//     height: 30px;
+//     margin-top: 30px;
+//     background-color: #61c6d0;
+// }
