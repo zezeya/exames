@@ -8,13 +8,14 @@
                label-width="100px"
                class="demo-form">
         <el-form-item label="账号昵称"
-                      prop="nickname ">
-          <el-input v-model="form.nickname "></el-input>
+                      prop="avatarName ">
+          <el-input v-model="form.avatarName "></el-input>
         </el-form-item>
         <el-form-item label="真实姓名"
                       prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
+
         <el-form-item label="性别"
                       prop="sex">
           <el-radio-group v-model="form.sex">
@@ -79,11 +80,13 @@ import { getUserInfoApi, getuserupdateApi } from '@/api/api'
 import data from '../json/citydata.json'
 export default {
   data() {
+    //函数是一个对象  复杂数据类型  赋值地址值存在运行环境内存
+    //键值对：基本数据类型  堆
     //存放数据
     return {
       // 创建对象
       form: {
-        nickname: '', //昵称
+        avatarName: '', //昵称
         name: '', //姓名
         locality: '', //所在地
         sex: '', //性别
@@ -92,11 +95,9 @@ export default {
         cityNo: '', //市编号
         areaNo: '', //区编号
       },
-
       provincedata: [],
       citydata: [],
       areadata: [],
-      //   params: '',
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -130,23 +131,23 @@ export default {
         sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
         intro: [{ required: true, message: '请填写简介', trigger: 'blur' }],
       },
-      datas: '',
     }
   },
+
   //生命周期  创建完成（访问this实例）
   async created() {
     this.getProvince()
     let res = await getUserInfoApi()
     if (res.data.status == 1) {
-      this.datas = res.data.data[0]
-      console.log(this.datas)
-      this.form.nickname = this.datas.avatarName //昵称
-      this.form.name = this.datas.name //真是姓名
-      this.form.sex = this.datas.sex //性别
-      this.form.intro = this.datas.desc //简介
-      this.form.provinceNo = this.datas.provinceNo //省
-      this.form.cityNo = this.datas.cityNo //市
-      this.form.areaNo = this.datas.areaNo //县
+      let datas = res.data.data
+
+      this.form.avatarName = datas.avatarName //昵称
+      this.form.name = datas.name //真是姓名
+      this.form.sex = datas.sex //性别
+      this.form.intro = datas.desc //简介
+      this.form.provinceNo = datas.provinceNo //省
+      this.form.cityNo = datas.cityNo //市
+      this.form.areaNo = datas.areaNo //县
     }
     this.getAllCity()
     this.getArea()
@@ -156,7 +157,6 @@ export default {
     // this.form.areaNo =
     //   this.areadata && this.areadata.code ? this.areadata.code : ''
   },
-
   mounted() {},
   //方法集合
   methods: {
@@ -182,7 +182,7 @@ export default {
     //保存
     async UpdateUserInfo() {
       let params = {
-        avatarName: this.form.nickname, //昵称
+        avatarName: this.form.avatarName, //昵称
         name: this.form.name, //真是姓名
         sex: this.form.sex, //性别
         desc: this.form.intro, //简介

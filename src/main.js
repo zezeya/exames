@@ -10,10 +10,13 @@ import './common.scss'
 import '@/assets/icon/iconfont.css'
 import VueSocketIO from 'vue-socket.io'
 
+
 //使用
 Vue.use(ElementUI, { size: 'small' })
     //挂载
 Vue.config.productionTip = false
+
+Vue.prototype.$store = store
 
 new Vue({
         router,
@@ -24,5 +27,5 @@ new Vue({
 /*在 main.js 里面进行 配置*/
 Vue.use(new VueSocketIO({
     debug: false,
-    connection: 'http://192.168.0.120:7001', //这个地址是服务端地址
+    connection: 'http://192.168.0.112:7001', //这个地址是服务端地址
 }))

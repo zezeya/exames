@@ -8,15 +8,16 @@
           <img class="icon ml-10"
                src="../assets/logo.png"
                alt="" />
-          <span>aichi5</span>
-
+          <span>Alick</span>
         </div>
         <div class="align-center">
-          <div>武汉市 2017-7-20 15:00 星期三 21-22℃ 晴 风力 1-2级</div>
+
+          <!-- <div>武汉市 2017-7-20 15:00 星期三 21-22℃ 晴 风力 1-2级</div> -->
           <div class="align-center">
             <img class="icon mr-5"
-                 src="../assets/logo.png"
+                 :src="$store.state.userInfo.avatarImg"
                  alt="" />
+
             <span>{{userInfo.username || userInfo.phone}}</span>
           </div>
           <div class="align-center">
@@ -67,7 +68,7 @@
                   <el-menu-item index="1-1"
                                 @click="navigator('setid')">个人资料</el-menu-item>
                   <el-menu-item index="1-2"
-                                @click="navigator('jilian')">修改头像</el-menu-item>
+                                @click="navigator('setAvate')">修改头像</el-menu-item>
                   <el-menu-item index="1-3"
                                 @click="navigator('listuser')">用户信息</el-menu-item>
 
@@ -118,6 +119,22 @@
                 <i class="el-icon-s-custom"></i>
                 <span slot="title">用户登录</span>
               </el-menu-item>
+              <el-submenu index="7">
+                <template slot="title">
+                  <i class="el-icon-setting"></i>
+                  <span>权限设置</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item index="1-1"
+                                @click="navigator('createPermission')">创建权限</el-menu-item>
+                  <el-menu-item index="1-2"
+                                @click="navigator('listRole')">角色列表</el-menu-item>
+                  <el-menu-item index="1-3"
+                                @click="navigator('jilian')">权限管理</el-menu-item>
+
+                </el-menu-item-group>
+
+              </el-submenu>
             </el-menu>
           </el-col>
         </el-aside>
@@ -147,19 +164,27 @@ export default {
       userInfo: {
         username: '请登录',
       },
-      //   subjectList: [],
+      payload: '',
     }
-  },
-  components: {
-    // HelloWorld,
-    // 'el-login': HomeComponent,
-    //  'el-js': JsComponent,
   },
   mounted() {
     this.getUserInfo()
   },
-
+  created() {
+    console.log(this.$store)
+  },
+  computed: {
+    avatarImg: function () {
+      return this.$store.state.userInfo.avatarImg
+    },
+  },
   methods: {
+    //vuex变量的存取
+    // save_userInfo() {
+    //   //   this.$store.commit('saveUserInfo', this.payload) //存
+    //   var getUserInfo = this.$store.state.userInfo //取
+    //   console.log(getUserInfo)
+    // },
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
     },
@@ -207,25 +232,12 @@ export default {
           this.config
         )
         .then((res) => {
-          //   console.log(res)
-          if (res.data.status == 401) {
-            // 当接口状态为401时 说明本次请求是token失效导致的
-            // 那么就需要重新登录
-            // 这一步做的就是登录拦截 如果没有登录或者token失效
-
-            this.$message({
-              // 提示失败信息
-              type: 'error',
-              message: '登录超时请重新登录！',
-            })
-            // 1.先清除缓存中的token
-            sessionStorage.removeItem('token') //清除过期的token
-            // 2.跳转到login页面进行登录
-            this.$router.push('/login')
-          }
+          console.log(res)
           if (res.data.status == 1) {
-            this.userInfo = res.data.data[0]
+            this.userInfo = res.data.data
             sessionStorage.getItem('token') //结束
+            this.$store.commit('saveUserInfo', res.data.data) //存
+            console.log(this.$store.state.userInfo)
             // this.setToken()
             this.$message({
               // 提示成功信息

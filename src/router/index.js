@@ -38,13 +38,13 @@ export default new VueRouter({
                         import ( /* webpackChunkName: "setid" */ '../views/SetidView.vue')
                 },
                 {
-                    path: '/jilian',
-                    name: 'jilian',
+                    path: '/setAvate',
+                    name: 'setAvate',
                     // route level code-splitting
                     // this generates a separate chunk (about.[hash].js) for this route
                     // which is lazy-loaded when the route is visited.
                     component: () =>
-                        import ( /* webpackChunkName: "jilian" */ '../views/JilianView.vue')
+                        import ( /* webpackChunkName: "setAvate" */ '../views/SetAvateView.vue')
                 },
                 {
                     path: '/createTask',
@@ -100,6 +100,7 @@ export default new VueRouter({
                     component: () =>
                         import ( /* webpackChunkName: "listRole" */ '../views/ListRoleView.vue')
                 },
+
                 {
                     path: '/detailTask',
                     name: 'detailTask',
@@ -109,6 +110,16 @@ export default new VueRouter({
                     component: () =>
                         import ( /* webpackChunkName: "detailTask" */ '../views/DetailTaskView.vue')
                 },
+                {
+                    path: '/createPermission/',
+                    name: 'createPermission',
+                    // route level code-splitting
+                    // this generates a separate chunk (about.[hash].js) for this route
+                    // which is lazy-loaded when the route is visited.
+                    component: () =>
+                        import ( /* webpackChunkName: "createPermission" */ '../views/CreatePermission.vue')
+                },
+
             ]
         },
 

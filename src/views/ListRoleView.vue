@@ -129,7 +129,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+ <style lang="scss" scoped>
 .main {
   display: grid;
   grid-template-columns: 1fr 1.5fr;

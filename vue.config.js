@@ -6,7 +6,7 @@ module.exports = defineConfig({
         proxy: {
             "/api": {
                 // target: 'http://192.168.0.123:7001/', //服务端域名地址
-                target: 'http://192.168.0.120:7001',
+                target: 'http://192.168.0.112:7001',
                 ws: true,
                 changeOrigin: true,
                 pathRewrite: { '^/api': '' } //路径重写

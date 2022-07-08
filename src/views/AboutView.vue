@@ -189,7 +189,7 @@ export default {
 
       if (isValide) {
         //调用服务端的接口
-        // 目前接口登录是成功了 但是提示信息为校验码必须为字符串 这个服务端处理有问题
+        // 目前接口登录是成功了
         axios.post('/api/user/register', this.register).then((res) => {
           console.log(res.data.msg)
           if (res.data.status == 1) {

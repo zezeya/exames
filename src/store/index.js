@@ -5,9 +5,17 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {},
+    state: {
+        userInfo: ''
+
+    },
     getters: {},
-    mutations: {},
+    mutations: {
+        saveUserInfo: (state, res) => {
+            state.userInfo = res
+            console.log(state.userInfo);
+        }
+    },
     actions: {},
     modules: {}
 })

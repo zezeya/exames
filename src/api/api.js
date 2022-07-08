@@ -1,6 +1,33 @@
 import axios from "axios";
 //api.js 就是存放服务端的接口的
+// 添加请求拦截器
+axios.interceptors.request.use(
+    function(config) {
+        console.log(config)
+            // 在发送请求之前做些什么
+        config.headers.authorization = sessionStorage.getItem('token')
+        return config
+    },
+    function(error) {
+        // 对请求错误做些什么
+        return Promise.reject(error)
+    }
+)
 
+// 添加响应拦截器
+axios.interceptors.response.use(
+    function(response) {
+        if (response.data.status == 401) {
+            window.location.href = '/login'
+        }
+        // 对响应数据做点什么
+        return response
+    },
+    function(error) {
+        // 对响应错误做点什么
+        return Promise.reject(error)
+    }
+)
 const getPostConfig = function() {
     return {
         headers: {
@@ -120,7 +147,7 @@ export const diaryCreateApi = function(payloaad = {}) {
 
 
 //创建任务
-export const createTask = function(payloaad = {}) {
+export const createTaskApi = function(payloaad = {}) {
         return axios.post('/api/task/create', payloaad)
     }
     //查询任务列表
@@ -136,8 +163,12 @@ export const detailTaskApi = function(payloaad = {}) {
         return axios.post('/api/task/detail', payloaad)
     }
     //发布任务
-export const taskReleaase = function(payloaad = {}) {
+export const taskReleaseApi = function(payloaad = {}) {
         return axios.post('/api/task/release', payloaad)
+    }
+    //编辑任务
+export const taskUpdateApi = function(payloaad = {}) {
+        return axios.post('/api/task/update', payloaad)
     }
     //创建角色
 export const createRoleApi = function(payloaad = {}) {
@@ -153,5 +184,30 @@ export const createRoleRoleApi = function(payloaad = {}) {
     }
     //角色分组列表
 export const listRoleGroupApi = function(payloaad = {}) {
-    return axios.post('/api/roleGroup/list', payloaad)
+        return axios.post('/api/roleGroup/list', payloaad)
+    }
+    //创建权限
+export const createPermissionApi = function(payloaad = {}) {
+        return axios.post('/api/permission/create', payloaad)
+    }
+    //创建列表
+export const listPermissionApi = function(payloaad = {}) {
+    return axios.post('/api/permission/list', payloaad)
+        //删除权限
+}
+export const deletePermissionApi = function(payloaad = {}) {
+        return axios.post('/api/permission/delete', payloaad)
+    }
+    //修改权限
+export const updatePermissionApi = function(payloaad = {}) {
+        return axios.post('/api/permission/update', payloaad)
+    }
+    //修改头像
+export const uploadImageApi = function(payloaad = {}) {
+    return axios.post('/api/upload/image', payloaad)
+}
+
+//返回头像列表
+export const avatarListApi = function(payloaad = {}) {
+    return axios.post('/api/avatar/list', payloaad)
 }

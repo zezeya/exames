@@ -56,30 +56,25 @@
                      type="text"
                      size="small">发布任务
           </el-button>
+
+          <el-button type="text"
+                     @click="editTasks(scope.row)"
+                     size="small"> 编辑任务
+
+          </el-button>
+
           <el-button type="text"
                      size="small">
-            <!-- 从右往左的抽屉 -->
-            <el-radio-group v-model="direction">
-            </el-radio-group>
-
             <el-button @click="drawer = true;detailTask(scope.row)"
                        type="primary"
                        style="margin-left: 16px;">
               任务详情
             </el-button>
-
-            <!-- <el-drawer title="我是标题"
-                       :visible.sync="drawer"
-                       :direction="direction"
-                       :before-close="handleClose">
-              <span>我来啦!</span>
-            </el-drawer> -->
-
           </el-button>
 
           <el-button type="text"
                      size="small"
-                     @click="open(scope.row)"
+                     @click="taskReleaase(scope.row)"
                      v-if='scope.row.isReceived !=1'>领取任务
           </el-button>
         </template>
@@ -97,16 +92,23 @@
                      :total="this.count">
       </el-pagination>
     </div>
+    <!-- 弹层 -->
+    <el-dialog title="修改任务"
+               :visible.sync="dialogVisible"
+               width="50%"
+               :before-close="handleClose">
+      <create-task-component v-on:sbumit="taskUpdate"
+                             :data="selectedData"
+                             ref="taskchild">
+      </create-task-component>
+
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {
-  listTask,
-  taskReleaase,
-  getUserInfoApi,
-  detailTaskApi,
-} from '@/api/api'
+import { listTask, taskUpdateApi, taskReleaseApi } from '@/api/api'
+import CreateTaskComponent from '../components/CreateTaskComponent.vue'
 export default {
   data() {
     return {
@@ -117,16 +119,40 @@ export default {
       pageSize: 5,
       totalCount: 0, //总页数
       drawer: false, //任务
-      direction: 'rtl', //任务
-      userId: [],
+      direction: '', //任务
+      userIds: [],
       taskId: '',
+      dialogVisible: false, //弹层
+      selectedData: '', //当前选中的行
     }
   },
-
+  components: { 'create-task-component': CreateTaskComponent },
+  created() {
+    this.listTask()
+  },
   methods: {
+    open2(a) {
+      console.log(a)
+      this.$message({
+        message: '恭喜你，修改成功',
+        type: 'success',
+      })
+    },
+    editTasks(row) {
+      console.log('父组件', row)
+      this.id = row.id
+
+      this.selectedData = row //给selectedData赋值
+      this.dialogVisible = true
+
+      this.$nextTick(() => {
+        this.$refs.taskchild.init()
+      })
+    },
     handleClick(row) {
       console.log(row)
     },
+
     handleEdit(index, row) {
       console.log(index, row)
     },
@@ -134,8 +160,45 @@ export default {
       this.$confirm('确认关闭？')
         .then(() => {
           done()
+          //   this.$message({
+          //     type: 'success',
+          //     message: '任务修改成功!',
+          //   })
+
+          this.listTask()
         })
         .catch(() => {})
+    },
+
+    //编辑任务
+    async taskUpdate(form) {
+      console.log(form)
+      let { name, duration, level, desc, userIds } = form
+      let res = await taskUpdateApi({
+        id: this.id, //任务id
+        name, //任务名称
+        desc, //任务描述
+        duration: Number(duration), //任务时长
+        level: Number(level), // 任务等级  1：紧急  0：普通任务
+      })
+      console.log(res)
+      if (res.data.status == 1) {
+        console.log('编译成功')
+        //    this.$refs.form.clearlist()
+        this.$message({
+          message: '恭喜你，修改成功',
+          type: 'success',
+        })
+        this.dialogVisible = false
+
+        // //发布任务
+        let res2 = await taskReleaseApi({
+          userIds,
+          taskId: this.id,
+        })
+        console.log(res2)
+      }
+      this.listTask()
     },
     //任务列表
     async listTask() {
@@ -147,64 +210,9 @@ export default {
       this.tableData = res.data.data.rows
       this.count = res.data.data.count
       this.pageCount = res.data.data.pageCount
-      console.log(res)
+      //   console.log(res)
     },
-    // //任务详情
-    async detailTask(row) {
-      var taskId = row.id
-      let res = await detailTaskApi({
-        taskId,
-      })
-      this.taskId = res.data.data.taskId
-      console.log(res)
-      console.log(this.taskId)
-      this.$router.push({
-        name: 'detailTask',
-        query: {
-          id: taskId,
-        },
-      })
-      this.receivedData = res.data.data.receivedData
-      var receivedData = this.receivedData
-      console.log(receivedData)
-      console.log(this.taskId)
-      console.log(receivedData[0].userId)
-      console.log(receivedData[0].userName)
-      console.log(receivedData[0].completedAt)
-    },
-    //领取任务
-    async open(row) {
-      console.log(row)
-      var taskId = row.id
-      const { userId } = this
-      let res = await taskReleaase({
-        userId,
-        taskId,
-      })
 
-      console.log(res)
-      if (res.data.status == 1) {
-        console.log(res)
-        this.$confirm('任务领取成功, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            this.$message({
-              type: 'success',
-              message: '任务领取成功!',
-            })
-            this.listTask()
-          })
-          .catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消领取',
-            })
-          })
-      }
-    },
     //分页
     handleSizeChange(val) {
       this.pageSize = val
@@ -214,13 +222,6 @@ export default {
       this.pageNum = val
       this.listTask()
     },
-  },
-  async created() {
-    this.listTask()
-    let res = await getUserInfoApi()
-    if (res.data.status == 1) {
-      this.userId = [res.data.data[0].id]
-    }
   },
 }
 </script>
